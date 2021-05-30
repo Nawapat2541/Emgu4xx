@@ -303,6 +303,40 @@ namespace Emgu4xx
             }
         }
 
+        private void watershedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (pictureBox1.Image == null) return;
+
+                var img = new Bitmap(pictureBox1.Image).ToImage<Bgr, byte>();
+                var mask = img.Convert<Gray, byte>().ThresholdBinaryInv(new Gray(150), new Gray(255));
+                Mat distanceTransform = new Mat();
+                CvInvoke.DistanceTransform(mask, distanceTransform, null, Emgu.CV.CvEnum.DistType.L2, 3);
+                CvInvoke.Normalize(distanceTransform, distanceTransform, 0, 255, Emgu.CV.CvEnum.NormType.MinMax);
+                var markers = distanceTransform.ToImage<Gray, byte>().ThresholdBinary(new Gray(50), new Gray(255));
+                CvInvoke.ConnectedComponents(markers, markers);
+                var finalMarkers = markers.Convert<Gray, Int32>();
+
+                CvInvoke.Watershed(img, finalMarkers);
+
+                Image<Gray, byte> boundaries = finalMarkers.Convert<byte>(delegate (Int32 x)
+                {
+                    return (byte)(x==-1 ? 255 : 0);
+                });
+
+                boundaries._Dilate(1);
+                img.SetValue(new Bgr(0, 255, 0), boundaries);
+                AddImage(img, "Watershed Segmentation");
+
+                pictureBox1.Image = img.ToBitmap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void blueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
