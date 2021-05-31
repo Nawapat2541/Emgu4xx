@@ -37,6 +37,7 @@ namespace Emgu4xx
             this.harrisDetectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shiTomasiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.utilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.binarizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findContourSortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objectDetectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,14 +48,17 @@ namespace Emgu4xx
             this.processROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.getRegionOfROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.histogramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.segmentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.watershedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.segmentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.watershedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.otsuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -126,16 +130,27 @@ namespace Emgu4xx
             // 
             // utilityToolStripMenuItem
             // 
+            this.utilityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.binarizeToolStripMenuItem,
+            this.otsuToolStripMenuItem});
             this.utilityToolStripMenuItem.Name = "utilityToolStripMenuItem";
             this.utilityToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
             this.utilityToolStripMenuItem.Text = "Utility";
+            // 
+            // binarizeToolStripMenuItem
+            // 
+            this.binarizeToolStripMenuItem.Name = "binarizeToolStripMenuItem";
+            this.binarizeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.binarizeToolStripMenuItem.Text = "Binarize";
+            this.binarizeToolStripMenuItem.Click += new System.EventHandler(this.binarizeToolStripMenuItem_Click);
             // 
             // processToolStripMenuItem
             // 
             this.processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.findContourSortToolStripMenuItem,
             this.objectDetectionToolStripMenuItem,
-            this.processROIToolStripMenuItem});
+            this.processROIToolStripMenuItem,
+            this.histogramToolStripMenuItem});
             this.processToolStripMenuItem.Name = "processToolStripMenuItem";
             this.processToolStripMenuItem.Size = new System.Drawing.Size(72, 24);
             this.processToolStripMenuItem.Text = "Process";
@@ -143,7 +158,7 @@ namespace Emgu4xx
             // findContourSortToolStripMenuItem
             // 
             this.findContourSortToolStripMenuItem.Name = "findContourSortToolStripMenuItem";
-            this.findContourSortToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.findContourSortToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.findContourSortToolStripMenuItem.Text = "Find Contour & Sort";
             // 
             // objectDetectionToolStripMenuItem
@@ -151,7 +166,7 @@ namespace Emgu4xx
             this.objectDetectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.color_BasedToolStripMenuItem});
             this.objectDetectionToolStripMenuItem.Name = "objectDetectionToolStripMenuItem";
-            this.objectDetectionToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.objectDetectionToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.objectDetectionToolStripMenuItem.Text = "ObjectDetection";
             // 
             // color_BasedToolStripMenuItem
@@ -192,7 +207,7 @@ namespace Emgu4xx
             this.selectROIToolStripMenuItem,
             this.getRegionOfROIToolStripMenuItem});
             this.processROIToolStripMenuItem.Name = "processROIToolStripMenuItem";
-            this.processROIToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.processROIToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.processROIToolStripMenuItem.Text = "Process ROI";
             // 
             // selectROIToolStripMenuItem
@@ -208,6 +223,36 @@ namespace Emgu4xx
             this.getRegionOfROIToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.getRegionOfROIToolStripMenuItem.Text = "Get Region of ROI";
             this.getRegionOfROIToolStripMenuItem.Click += new System.EventHandler(this.getRegionOfROIToolStripMenuItem_Click);
+            // 
+            // histogramToolStripMenuItem
+            // 
+            this.histogramToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.calculateToolStripMenuItem});
+            this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
+            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
+            this.histogramToolStripMenuItem.Text = "Histogram";
+            // 
+            // calculateToolStripMenuItem
+            // 
+            this.calculateToolStripMenuItem.Name = "calculateToolStripMenuItem";
+            this.calculateToolStripMenuItem.Size = new System.Drawing.Size(153, 26);
+            this.calculateToolStripMenuItem.Text = "Calculate";
+            this.calculateToolStripMenuItem.Click += new System.EventHandler(this.calculateToolStripMenuItem_Click);
+            // 
+            // segmentationToolStripMenuItem
+            // 
+            this.segmentationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.watershedToolStripMenuItem});
+            this.segmentationToolStripMenuItem.Name = "segmentationToolStripMenuItem";
+            this.segmentationToolStripMenuItem.Size = new System.Drawing.Size(116, 24);
+            this.segmentationToolStripMenuItem.Text = "Segmentation";
+            // 
+            // watershedToolStripMenuItem
+            // 
+            this.watershedToolStripMenuItem.Name = "watershedToolStripMenuItem";
+            this.watershedToolStripMenuItem.Size = new System.Drawing.Size(162, 26);
+            this.watershedToolStripMenuItem.Text = "Watershed";
+            this.watershedToolStripMenuItem.Click += new System.EventHandler(this.watershedToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -277,20 +322,12 @@ namespace Emgu4xx
             this.panel2.TabIndex = 5;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
-            // segmentationToolStripMenuItem
+            // otsuToolStripMenuItem
             // 
-            this.segmentationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.watershedToolStripMenuItem});
-            this.segmentationToolStripMenuItem.Name = "segmentationToolStripMenuItem";
-            this.segmentationToolStripMenuItem.Size = new System.Drawing.Size(116, 24);
-            this.segmentationToolStripMenuItem.Text = "Segmentation";
-            // 
-            // watershedToolStripMenuItem
-            // 
-            this.watershedToolStripMenuItem.Name = "watershedToolStripMenuItem";
-            this.watershedToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.watershedToolStripMenuItem.Text = "Watershed";
-            this.watershedToolStripMenuItem.Click += new System.EventHandler(this.watershedToolStripMenuItem_Click);
+            this.otsuToolStripMenuItem.Name = "otsuToolStripMenuItem";
+            this.otsuToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.otsuToolStripMenuItem.Text = "Otsu";
+            this.otsuToolStripMenuItem.Click += new System.EventHandler(this.otsuToolStripMenuItem_Click);
             // 
             // Emgu4xxForm
             // 
@@ -342,6 +379,10 @@ namespace Emgu4xx
         private System.Windows.Forms.ToolStripMenuItem shiTomasiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem segmentationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem watershedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem histogramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calculateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem binarizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem otsuToolStripMenuItem;
     }
 }
 

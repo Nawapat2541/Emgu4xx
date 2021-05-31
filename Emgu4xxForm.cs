@@ -12,6 +12,7 @@ using Emgu;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.Features2D;
+using Emgu.CV.UI;
 using Emgu.CV.Util;
 
 namespace Emgu4xx
@@ -330,6 +331,117 @@ namespace Emgu4xx
                 AddImage(img, "Watershed Segmentation");
 
                 pictureBox1.Image = img.ToBitmap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void calculateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (pictureBox1.Image == null) return;
+
+                var img = new Bitmap(pictureBox1.Image).ToImage<Gray, byte>();
+
+                Mat hist = new Mat();
+                float[] ranges = new float[] {0, 255 };
+                int[] channel = { 0 };
+                int[] histSize = { 256 };
+
+                VectorOfMat ms = new VectorOfMat();
+                ms.Push(img);
+
+                CvInvoke.CalcHist(ms, channel, null, hist, histSize, ranges, false);
+
+                HistogramViewer viewer = new HistogramViewer();
+                viewer.Text = "Image Histogram";
+                viewer.ShowIcon = false;
+                viewer.HistogramCtrl.AddHistogram("Image Histogram", Color.Blue, hist, histSize[0], ranges);
+                viewer.HistogramCtrl.Refresh();
+                viewer.Show();
+
+                // sroting the histogram
+                var array = hist.GetData();
+                var list = array.Cast<Single>().Select(c => (int)c).ToArray();
+                var dictionary = list.Select((v, j) => new { Key = j, Value = v }).ToDictionary(o => o.Value);
+
+                var sorted = dictionary.OrderByDescending(x => x.Value).ToList();
+
+                int N = 20;
+                List<int> selected = new List<int>();
+                for (int i=0; i<N; i++)
+                {
+                    selected.Add(sorted[i].Key);
+                }
+
+                Image<Gray, byte> img2 = img.Convert<byte>(delegate (byte b)
+                {
+                    return selected.Contains((int)b) ? b : (byte)0;
+                });
+
+                pictureBox1.Image = img2.AsBitmap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void binarizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                HarrisParametersForm form = new HarrisParametersForm(0, 255, 100);
+                form.OnApply += ApplyThreshold;
+                form.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void ApplyThreshold(int x)
+        {
+            try
+            {
+                if (imgList["Input"] == null)
+                {
+                    return;
+                }
+
+                var img = imgList["Input"].Convert<Gray, byte>().Clone();
+                var output = img.ThresholdBinary(new Gray(x), new Gray(255));
+                pictureBox1.Image = output.AsBitmap();
+                AddImage(output.Convert<Bgr, byte>(), "Thresholding");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private void otsuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (pictureBox2.Image == null) return;
+
+                var img = new Bitmap(pictureBox2.Image).ToImage<Gray, byte>();
+
+                Mat hist = new Mat();
+                float[] ranges = new float[] { 0, 255 };
+                int[] channel = { 0 };
+                int[] histSize = { 256 };
+
+                VectorOfMat ms = new VectorOfMat();
+                ms.Push(img);
+
+                CvInvoke.CalcHist(ms, channel, null, hist, histSize, ranges, false);
+
+                pictureBox2.Image = img.AsBitmap();
             }
             catch (Exception ex)
             {
